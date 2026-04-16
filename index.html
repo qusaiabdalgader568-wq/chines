@@ -9,264 +9,218 @@
 
 <style>
 :root{
-    --bg: linear-gradient(135deg,#0f0f0f,#1a1a1a);
-    --card:#1c1c1c;
+    --bg: #0a0a0a;
+    --card:#161616;
     --gold:#d4af37;
     --text:#fff;
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body{
     margin:0;
-    font-family:Segoe UI;
-    background:var(--bg);
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg);
     color:var(--text);
     padding:15px;
 }
 
 header{
     text-align:center;
-    margin-bottom:20px;
+    padding: 10px 0 20px 0;
 }
 
 header h1{
     color:var(--gold);
     margin:0;
+    font-size: 1.5rem;
 }
 
-/* GRID */
 .main-grid{
     display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:12px;
-    max-width:450px;
-    margin:auto;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    max-width: 450px;
+    margin: auto;
 }
 
 .box{
-    background:var(--card);
-    border:1px solid rgba(212,175,55,0.2);
-    border-radius:15px;
-    height:110px;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    cursor:pointer;
+    background: var(--card);
+    border: 1px solid rgba(212,175,55,0.08);
+    border-radius: 12px;
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: var(--transition);
 }
 
-.box i{
-    color:var(--gold);
-    font-size:2rem;
-    margin-bottom:5px;
-}
+.box:hover { border-color: var(--gold); background: rgba(212,175,55,0.05); }
+.box:active { transform: scale(0.95); }
+.box i{ color: var(--gold); font-size: 1.3rem; margin-bottom: 5px; }
+.box span { font-size: 0.75rem; font-weight: 500; }
 
-/* PANEL */
 .offers-panel{
     display:none;
     position:fixed;
     inset:0;
-    background:#111;
+    background: rgba(10,10,10,0.98);
     padding:15px;
     overflow:auto;
+    z-index: 1000;
+    animation: slideUp 0.3s ease;
 }
 
-.panel-header{
-    display:flex;
-    justify-content:space-between;
-    border-bottom:1px solid #333;
-    margin-bottom:15px;
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.close-btn{
-    font-size:2rem;
-    color:var(--gold);
-    cursor:pointer;
+.panel-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #222;
+    padding-bottom: 10px;
+}
+
+.back-btn {
+    background: none;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 4px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 0.8rem;
 }
 
 .mini-card{
     background:#1c1c1c;
-    padding:15px;
-    border-radius:12px;
+    padding: 10px 15px;
+    border-radius:10px;
     margin-bottom:10px;
-    border:1px solid rgba(212,175,55,0.2);
+    border:1px solid #282828;
 }
+
+.mini-card h3 { margin: 0; font-size: 0.95rem; color: var(--gold); }
+.mini-card p { margin: 4px 0 8px 0; font-size: 0.8rem; color: #888; }
+
+.btn-group { display: flex; gap: 8px; }
 
 .btn{
-    margin-top:10px;
-    padding:10px;
-    width:100%;
+    flex: 1;
+    padding: 8px;
     border:none;
-    border-radius:10px;
+    border-radius:6px;
     cursor:pointer;
     font-weight:bold;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 
-.wa{background:#d4af37;color:black;}
-.tg{background:#229ed9;color:white;}
+.wa{ background:var(--gold); color:#000; }
+.tg{ background:#229ed9; color:#fff; }
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>QUSAY STORE</h1>
-<p>هنا حيث تجد ما يليق بك ✨</p>
+    <h1>𝙌𝙐𝙎𝘼𝙔 𝙎𝙏𝙊𝙍𝙀</h1>
+    <p style="font-size: 0.75rem; opacity: 0.5; margin-top:5px;">بوابتك لاحتراف البرمجيات والأمن الرقمي</p>
 </header>
 
-<!-- المنصات -->
 <div class="main-grid">
-
-<div class="box" onclick="showOffers('wa')">
-<i class="fa-brands fa-whatsapp"></i>
-<span>WhatsApp</span>
+    <div class="box" onclick="showOffers('py_course')"><i class="fa-solid fa-code"></i><span>كورس بايثون مكتوب</span></div>
+    <div class="box" onclick="showOffers('cyber')"><i class="fa-solid fa-shield-halved"></i><span>الأمن السيبراني</span></div>
+    <div class="box" onclick="showOffers('py')"><i class="fa-brands fa-python"></i><span>برمجة بايثون</span></div>
+    <div class="box" onclick="showOffers('wa')"><i class="fa-brands fa-whatsapp"></i><span>خدمات واتساب</span></div>
+    <div class="box" onclick="showOffers('tg')"><i class="fa-brands fa-telegram"></i><span>خدمات تليجرام</span></div>
+    <div class="box" onclick="showOffers('tw')"><i class="fa-brands fa-twitter"></i><span>تويتر / X</span></div>
+    <div class="box" onclick="showOffers('fb')"><i class="fa-brands fa-facebook"></i><span>فيسبوك</span></div>
+    <div class="box" onclick="showOffers('ig')"><i class="fa-brands fa-instagram"></i><span>إنستغرام</span></div>
+    <div class="box" onclick="showOffers('tt')"><i class="fa-brands fa-tiktok"></i><span>تيك توك</span></div>
+    <div class="box" onclick="showOffers('yt')"><i class="fa-brands fa-youtube"></i><span>يوتيوب</span></div>
 </div>
 
-<div class="box" onclick="showOffers('fb')">
-<i class="fa-brands fa-facebook"></i>
-<span>Facebook</span>
-</div>
-
-<div class="box" onclick="showOffers('ig')">
-<i class="fa-brands fa-instagram"></i>
-<span>Instagram</span>
-</div>
-
-<div class="box" onclick="showOffers('tg')">
-<i class="fa-brands fa-telegram"></i>
-<span>Telegram</span>
-</div>
-
-<div class="box" onclick="showOffers('tt')">
-<i class="fa-brands fa-tiktok"></i>
-<span>TikTok</span>
-</div>
-
-<div class="box" onclick="showOffers('yt')">
-<i class="fa-brands fa-youtube"></i>
-<span>YouTube</span>
-</div>
-
-</div>
-
-<!-- لوحة العروض -->
 <div id="offersPanel" class="offers-panel">
-
-<div class="panel-header">
-<h2 id="panelTitle"></h2>
-<span class="close-btn" onclick="closeOffers()">&times;</span>
-</div>
-
-<div id="offersContainer"></div>
-
+    <div class="panel-header">
+        <button class="back-btn" onclick="closeOffers()">رجوع <i class="fa-solid fa-chevron-left"></i></button>
+        <h2 id="panelTitle" style="margin:0; font-size:1rem; flex:1; text-align:center;"></h2>
+    </div>
+    <div id="offersContainer"></div>
 </div>
 
 <script>
-
-const WHATSAPP = "249906024672";
-
-/* =========================
-🧠 العروض (هنا التعديل فقط)
-========================= */
+const MY_NUMBER = "249906024672";
+const TELEGRAM_USER = "chinese249"; 
 
 const data = {
-
-wa:{
-title:"واتساب",
-items:[
-{t:"بوت إدارة",d:"حماية كاملة"},
-{t:"فك حظر",d:"استرجاع سريع"},
-{t:"حظر واتساب",d:"تطيير ارقام"}
-]
-},
-
-fb:{
-title:"فيسبوك",
-items:[
-{t:"تأمين حساب",d:"حماية قوية"},
-{t:"زيادة متابعين",d:"تفاعل حقيقي"}
-]
-},
-
-ig:{
-title:"إنستغرام",
-items:[
-{t:"توثيق حساب",d:"دعم رسمي"},
-{t:"مشاهدات ريلز",d:"انتشار"}
-]
-},
-
-tg:{
-title:"تيليجرام",
-items:[
-{t:"بوت تيليجرام",d:"رد تلقائي"},
-{t:"زيادة أعضاء",d:"قنوات"}
-]
-},
-
-tt:{
-title:"تيك توك",
-items:[
-{t:"مشاهدات",d:"ترند"},
-{t:"متابعين",d:"عرب"}
-]
-},
-
-yt:{
-title:"يوتيوب",
-items:[
-{t:"ساعات مشاهدة",d:"تحقيق الربح"},
-{t:"مشتركين",d:"زيادة"}
-]
-}
-
+    // قسم الكورسات الجديد مع خاصية الإرسال للشات الشخصي
+    py_course:{ 
+        title:"كورسات بايثون المكتوبة", 
+        isSelfOrder: true,
+        items:[ 
+            {t:"دورة الأساسيات", d:"تعلم المتغيرات، الحلقات، والدوال ببساطة."},
+            {t:"دورة بايثون المتقدمة", d:"التعامل مع الملفات والمكتبات الخارجية."},
+            {t:"دورة بناء بوتات بايثون", d:"تعلم بناء بوتات تليجرام متطورة."}
+        ] 
+    },
+    py:{ title:"برمجة بايثون مخصصة", items:[ {t:"سكربت بايثون",d:"برمجة أداة خاصة بك"}, {t:"تطوير بوتات",d:"بوتات ذكاء اصطناعي"} ] },
+    cyber:{ title:"الأمن السيبراني", items:[ {t:"فحص اختراق",d:"فحص شامل للثغرات"}, {t:"تأمين شامل",d:"حماية الحسابات والسيرفرات"} ] },
+    wa:{ title:"خدمات واتساب", items:[ {t:"بوت حماية",d:"إدارة المجموعات آلياً"}, {t:"فك الحظر",d:"استرجاع الأرقام المحظورة"} ] },
+    tg:{ title:"تليجرام", items:[ {t:"صنع بوتات",d:"برمجة بوتات خدمية"}, {t:"أعضاء قنوات",d:"زيادة أعضاء حقيقيين"} ] },
+    tw:{ title:"تويتر / X", items:[ {t:"متابعين",d:"زيادة متابعين حقيقيين"}, {t:"تفاعل X",d:"ريتويت ولايكات"} ] },
+    fb:{ title:"فيسبوك", items:[ {t:"تأمين",d:"حماية الحسابات"}, {t:"متابعين",d:"دعم الصفحات"} ] },
+    ig:{ title:"إنستغرام", items:[ {t:"توثيق",d:"خدمة العلامة الزرقاء"}, {t:"مشاهدات",d:"دعم ريلز"} ] },
+    tt:{ title:"تيك توك", items:[ {t:"متابعين",d:"زيادة سريعة"}, {t:"لايف",d:"دعم البث المباشر"} ] },
+    yt:{ title:"يوتيوب", items:[ {t:"تحقيق ربح",d:"4000 ساعة و 1000 مشترك"} ] }
 };
 
-/* فتح الأقسام */
 function showOffers(k){
-let p = data[k];
-if(!p) return;
-
-document.getElementById("panelTitle").innerText = p.title;
-
-let box = document.getElementById("offersContainer");
-box.innerHTML="";
-
-p.items.forEach(i=>{
-box.innerHTML += `
-<div class="mini-card">
-<h3>${i.t}</h3>
-<p>${i.d}</p>
-
-<button class="btn wa" onclick="order('${i.t}')">
-طلب واتساب
-</button>
-
-<button class="btn tg" onclick="orderTG('${i.t}')">
-تليجرام
-</button>
-
-</div>`;
-});
-
-document.getElementById("offersPanel").style.display="block";
+    let p = data[k];
+    if(!p) return;
+    document.getElementById("panelTitle").innerText = p.title;
+    let box = document.getElementById("offersContainer");
+    box.innerHTML="";
+    p.items.forEach(i=>{
+        // نتحقق إذا كان القسم هو الكورسات لنستخدم رابط الواتساب بدون رقم
+        let waAction = p.isSelfOrder ? `selfOrderWA('${i.t}')` : `orderWA('${i.t}')`;
+        box.innerHTML += `
+        <div class="mini-card">
+            <h3>${i.t}</h3>
+            <p>${i.d}</p>
+            <div class="btn-group">
+                <button class="btn wa" onclick="${waAction}"><i class="fa-brands fa-whatsapp"></i> واتساب</button>
+                <button class="btn tg" onclick="orderTG('${i.t}')"><i class="fa-brands fa-telegram"></i> تليجرام</button>
+            </div>
+        </div>`;
+    });
+    document.getElementById("offersPanel").style.display="block";
 }
 
-/* واتساب */
-function order(service){
-let msg = encodeURIComponent("طلب خدمة: "+service);
-window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP}&text=${msg}`);
+// طلب الخدمة إلى رقمك أنت مباشرة
+function orderWA(service){
+    window.open(`https://api.whatsapp.com/send?phone=${MY_NUMBER}&text=${encodeURIComponent("أهلاً قُصي، أرغب في طلب خدمة: " + service)}`);
 }
 
-/* تليجرام */
+// طلب الكورس (يفتح الواتساب في شات الشخص نفسه بدون تحديد رقمك)
+function selfOrderWA(course){
+    window.open(`https://wa.me/?text=${encodeURIComponent("أنا مهتم بكورس: " + course + "\nأريد البدء في تعلم هذا المسار.")}`);
+}
+
 function orderTG(service){
-window.open("https://t.me/username?text="+encodeURIComponent(service));
+    window.open(`https://t.me/${TELEGRAM_USER}?text=${encodeURIComponent("أهلاً، أود طلب: " + service)}`);
 }
 
-/* إغلاق */
 function closeOffers(){
-document.getElementById("offersPanel").style.display="none";
+    document.getElementById("offersPanel").style.display="none";
 }
-
 </script>
 
 </body>
