@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QUSAY STORE</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+:root{
+    --bg: linear-gradient(135deg,#0f0f0f,#1a1a1a);
+    --card:#1c1c1c;
+    --gold:#d4af37;
+    --text:#fff;
+}
+
+body{
+    margin:0;
+    font-family:Segoe UI;
+    background:var(--bg);
+    color:var(--text);
+    padding:15px;
+}
+
+header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+header h1{
+    color:var(--gold);
+    margin:0;
+}
+
+/* GRID */
+.main-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    max-width:450px;
+    margin:auto;
+}
+
+.box{
+    background:var(--card);
+    border:1px solid rgba(212,175,55,0.2);
+    border-radius:15px;
+    height:110px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+}
+
+.box i{
+    color:var(--gold);
+    font-size:2rem;
+    margin-bottom:5px;
+}
+
+/* PANEL */
+.offers-panel{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:#111;
+    padding:15px;
+    overflow:auto;
+}
+
+.panel-header{
+    display:flex;
+    justify-content:space-between;
+    border-bottom:1px solid #333;
+    margin-bottom:15px;
+}
+
+.close-btn{
+    font-size:2rem;
+    color:var(--gold);
+    cursor:pointer;
+}
+
+.mini-card{
+    background:#1c1c1c;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:10px;
+    border:1px solid rgba(212,175,55,0.2);
+}
+
+.btn{
+    margin-top:10px;
+    padding:10px;
+    width:100%;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.wa{background:#d4af37;color:black;}
+.tg{background:#229ed9;color:white;}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>QUSAY STORE</h1>
+<p>هنا حيث تجد ما يليق بك ✨</p>
+</header>
+
+<!-- المنصات -->
+<div class="main-grid">
+
+<div class="box" onclick="showOffers('wa')">
+<i class="fa-brands fa-whatsapp"></i>
+<span>WhatsApp</span>
+</div>
+
+<div class="box" onclick="showOffers('fb')">
+<i class="fa-brands fa-facebook"></i>
+<span>Facebook</span>
+</div>
+
+<div class="box" onclick="showOffers('ig')">
+<i class="fa-brands fa-instagram"></i>
+<span>Instagram</span>
+</div>
+
+<div class="box" onclick="showOffers('tg')">
+<i class="fa-brands fa-telegram"></i>
+<span>Telegram</span>
+</div>
+
+<div class="box" onclick="showOffers('tt')">
+<i class="fa-brands fa-tiktok"></i>
+<span>TikTok</span>
+</div>
+
+<div class="box" onclick="showOffers('yt')">
+<i class="fa-brands fa-youtube"></i>
+<span>YouTube</span>
+</div>
+
+</div>
+
+<!-- لوحة العروض -->
+<div id="offersPanel" class="offers-panel">
+
+<div class="panel-header">
+<h2 id="panelTitle"></h2>
+<span class="close-btn" onclick="closeOffers()">&times;</span>
+</div>
+
+<div id="offersContainer"></div>
+
+</div>
+
+<script>
+
+const WHATSAPP = "249906024672";
+
+/* =========================
+🧠 العروض (هنا التعديل فقط)
+========================= */
+
+const data = {
+
+wa:{
+title:"واتساب",
+items:[
+{t:"بوت إدارة",d:"حماية كاملة"},
+{t:"فك حظر",d:"استرجاع سريع"},
+{t:"حظر واتساب",d:"تطيير ارقام"}
+]
+},
+
+fb:{
+title:"فيسبوك",
+items:[
+{t:"تأمين حساب",d:"حماية قوية"},
+{t:"زيادة متابعين",d:"تفاعل حقيقي"}
+]
+},
+
+ig:{
+title:"إنستغرام",
+items:[
+{t:"توثيق حساب",d:"دعم رسمي"},
+{t:"مشاهدات ريلز",d:"انتشار"}
+]
+},
+
+tg:{
+title:"تيليجرام",
+items:[
+{t:"بوت تيليجرام",d:"رد تلقائي"},
+{t:"زيادة أعضاء",d:"قنوات"}
+]
+},
+
+tt:{
+title:"تيك توك",
+items:[
+{t:"مشاهدات",d:"ترند"},
+{t:"متابعين",d:"عرب"}
+]
+},
+
+yt:{
+title:"يوتيوب",
+items:[
+{t:"ساعات مشاهدة",d:"تحقيق الربح"},
+{t:"مشتركين",d:"زيادة"}
+]
+}
+
+};
+
+/* فتح الأقسام */
+function showOffers(k){
+let p = data[k];
+if(!p) return;
+
+document.getElementById("panelTitle").innerText = p.title;
+
+let box = document.getElementById("offersContainer");
+box.innerHTML="";
+
+p.items.forEach(i=>{
+box.innerHTML += `
+<div class="mini-card">
+<h3>${i.t}</h3>
+<p>${i.d}</p>
+
+<button class="btn wa" onclick="order('${i.t}')">
+طلب واتساب
+</button>
+
+<button class="btn tg" onclick="orderTG('${i.t}')">
+تليجرام
+</button>
+
+</div>`;
+});
+
+document.getElementById("offersPanel").style.display="block";
+}
+
+/* واتساب */
+function order(service){
+let msg = encodeURIComponent("طلب خدمة: "+service);
+window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP}&text=${msg}`);
+}
+
+/* تليجرام */
+function orderTG(service){
+window.open("https://t.me/username?text="+encodeURIComponent(service));
+}
+
+/* إغلاق */
+function closeOffers(){
+document.getElementById("offersPanel").style.display="none";
+}
+
+</script>
+
+</body>
+</html>
