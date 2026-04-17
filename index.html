@@ -13,7 +13,7 @@
     --card:#161616;
     --gold:#d4af37;
     --text:#fff;
-    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body{
@@ -22,6 +22,7 @@ body{
     background: var(--bg);
     color:var(--text);
     padding:15px;
+    overflow-x: hidden;
 }
 
 header{
@@ -57,10 +58,11 @@ header h1{
 }
 
 .box:hover { border-color: var(--gold); background: rgba(212,175,55,0.05); }
-.box:active { transform: scale(0.95); }
+.box:active { transform: scale(0.92); }
 .box i{ color: var(--gold); font-size: 1.3rem; margin-bottom: 5px; }
 .box span { font-size: 0.75rem; font-weight: 500; }
 
+/* لوحة العروض المحسنة */
 .offers-panel{
     display:none;
     position:fixed;
@@ -69,12 +71,29 @@ header h1{
     padding:15px;
     overflow:auto;
     z-index: 1000;
-    animation: slideUp 0.3s ease;
+    opacity: 0;
+}
+
+/* أنميشن الدخول */
+.panel-show {
+    display: block !important;
+    animation: slideUp 0.4s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* أنميشن الخروج */
+.panel-hide {
+    display: block !important;
+    animation: slideDown 0.4s forwards cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
+    from { opacity: 0; transform: translateY(100%); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(100%); }
 }
 
 .panel-header {
@@ -90,11 +109,14 @@ header h1{
     background: none;
     color: var(--gold);
     border: 1px solid var(--gold);
-    padding: 4px 12px;
-    border-radius: 15px;
+    padding: 6px 15px;
+    border-radius: 20px;
     cursor: pointer;
     font-size: 0.8rem;
+    transition: 0.2s;
 }
+
+.back-btn:active { background: var(--gold); color: #000; }
 
 .mini-card{
     background:#1c1c1c;
@@ -111,7 +133,7 @@ header h1{
 
 .btn{
     flex: 1;
-    padding: 8px;
+    padding: 10px;
     border:none;
     border-radius:6px;
     cursor:pointer;
@@ -149,7 +171,7 @@ header h1{
 
 <div id="offersPanel" class="offers-panel">
     <div class="panel-header">
-        <button class="back-btn" onclick="closeOffers()">رجوع <i class="fa-solid fa-chevron-left"></i></button>
+        <button class="back-btn" onclick="closeOffers()"><i class="fa-solid fa-arrow-right"></i> رجوع </button>
         <h2 id="panelTitle" style="margin:0; font-size:1rem; flex:1; text-align:center;"></h2>
     </div>
     <div id="offersContainer"></div>
@@ -169,22 +191,16 @@ const data = {
             {t:"حظر واتساب", d:"طرق حظر واتساب"},
             {t:"توثيق واتساب", d:"توثيق رسمي من شركة واتساب"},
             {t:"أرقام وهمية", d:"تفعيل واتساب برقم وهمي"},
-            {t:"بوت رد تلقائي", d:"رد ذكي على العملاء 24 ساعة"},
+            {t:"بوت رد تلقائي", d:"رد ذكي على العملاء 24 ساعة"}
       ] 
     },
     py:{ 
         title:"برمجة بايثون مخصصة", 
         items:[ 
-            {t:"سكربت بايثون",d:"برمجة أداة خاصة بك"}, 
-            {t:"تطوير بوتات",d:"بوتات ذكاء اصطناعي"},
-            {t:"أتمتة المهام",d:"تنفيذ مهام المتصفح آلياً"},
-            {t:"تحليل بيانات",d:"استخراج وتحليل البيانات الكبيرة"},
-            {t:"برمجة أدوات صيد",d:"سكربتات فحص متاحات"},
-            {t:"تطوير واجهات",d:"برامج سطح مكتب GUI"},
-            {t:"ربط APIs",d:"توصيل السكربت بخدمات خارجية"},
-            {t:"تشفير أدوات",d:"حماية كودك من التسريب"},
-            {t:"سكربتات لينكس",d:"أدوات مخصصة لتوزيعات كالي"},
-            {t:"إصلاح أخطاء",d:"تصحيح الكود وتطوير السكربتات"}
+            {t:"مكاتب بايثون",d:"جميع مكاتب بايثون"}, 
+            {t:"صيد سافيوم",d:"اداة صيد حسابات سافيوم"},
+            {t:"رشق تيك توك",d:"اداة رشق تيك توك"},
+            {t:"تثبيت مكاتب",d:"شرح تثبيت مكاتب بايثون"}
         ] 
     },
     cyber:{ 
@@ -193,7 +209,7 @@ const data = {
             {t:"فحص اختراق",d:"فحص شامل للثغرات"}, 
             {t:"إزالة فيروسات",d:"تنظيف الأجهزة من التجسس"},
             {t:"كشف التنصت",d:"فحص الجوال من تطبيقات التجسس"},
-            {t:"إختراق wi fi",d:"تطبيق كشف كلمات المرور"},
+            {t:"إختراق wi fi",d:"تطبيق كشف كلمات المرور"}
         ] 
     },
     tg:{ 
@@ -202,27 +218,21 @@ const data = {
             {t:"صنع بوتات",d:"برمجة بوتات خدمية"}, 
             {t:"أعضاء قنوات",d:"زيادة أعضاء حقيقيين"},
             {t:"بوتات حماية",d:"طرد الحسابات الوهمية تلقائياً"},
-            {t:"تفاعل قنوات",d:"مشاهدات وتفاعلات تلقائية"},
-            {t:"توثيق قنوات",d:"المساعدة في الحصول على العلامة"},
-            {t:"تواصل ذكي",d:"بوت تواصل مطور للمدراء"},
-            {t:"زيادة تصويت",d:"رفع نتائج الاستطلاعات"},
-            {t:"حماية حسابات",d:"تفعيل التحقق بخطوتين"},
+            {t:"بوتات كراش",d:"أفضل بوتات كراش"},
+            {t:"تلجرام مميز",d:"تفعيل تلجرام مميز"},
+            {t:"شكل تلجرام",d:"طريقة تغيير شكل تلجرام"},
+            {t:"إخفاء الاسم",d:"طريقة إخفاء اسمك في تلجرام"},
+            {t:"بوتات أرقام فيك",d:"أفضل بوتات للأرقام الفيك"},
             {t:"تطيير قنوات",d:"إزالة قنوات تلجرام"}
         ] 
     },
     tw:{ 
         title:"تويتر / X", 
         items:[ 
-            {t:"متابعين",d:"زيادة متابعين حقيقيين"}, 
-            {t:"تفاعل X",d:"ريتويت ولايكات"},
-            {t:"مشاهدات فيديو",d:"رفع عداد المشاهدات"},
-            {t:"توثيق ذهبي/أزرق",d:"خدمات اشتراك Premium"},
-            {t:"تصدر ترند",d:"دعم الوسم ليصبح ترند"},
-            {t:"حذف تغريدات",d:"مسح التغريدات القديمة دفعة واحدة"},
-            {t:"رفع تصويت",d:"زيادة نسب التصويت في التغريدات"},
-            {t:"متابعين خليجيين",d:"استهداف جمهور محدد"},
-            {t:"تأمين الحساب",d:"منع البلاغات والإغلاق"},
-            {t:"برمجة بوت تويتر",d:"ردود ونشر تلقائي"}
+            {t:"متابعين",d:"موقع رشق متابعين"}, 
+            {t:"كورس اختراق",d:"طريقة إختراق حسابات "},
+            {t:"تنزيل فيديو",d:"طريقة تنزيل فيديو"},
+            {t:"تويتر مهكر",d:"يحتوي على ميزات فريدة"}
         ] 
     },
     fb:{ 
@@ -233,7 +243,7 @@ const data = {
             {t:"روابط الدعم",d:"روابط الشركة الرسمية"},
             {t:"كود إزالة القروبات",d:"كود لإزالة القروبات"},
             {t:"حماية حسابك من الإختراق",d:"لتأمين حسابك "},
-            {t:"حظر حسابات ",d:"التخلص من الحسابات"},
+            {t:"حظر حسابات ",d:"التخلص من الحسابات"}
         ] 
     },
     ig:{ 
@@ -259,14 +269,14 @@ const data = {
             {t:"حركة إكسبلور",d:"زيادة الشير والحفظ"},
             {t:"إزالة بث",d:"التخلص من البثوث"},
             {t:"لايكات تيك توك",d:"تفاعل قوي وفوري"},
-            {t:"إزالة حسابات",d:"كود إزالة حسابات"},
- 
+            {t:"إزالة حسابات",d:"كود إزالة حسابات"}
         ] 
     },
     yt:{ 
         title:"يوتيوب", 
-        items:[     {t:"دعم يوتيوب",d:"قنوات"},
-    {t:"إنشاء لوغو",d:"لوغو إحترافي للقنوات"},
+        items:[     
+            {t:"دعم يوتيوب",d:"قنوات"},
+            {t:"إنشاء لوغو",d:"لوغو إحترافي للقنوات"}
         ] 
     }
 };
@@ -274,9 +284,11 @@ const data = {
 function showOffers(k){
     let p = data[k];
     if(!p) return;
+    
     document.getElementById("panelTitle").innerText = p.title;
     let box = document.getElementById("offersContainer");
     box.innerHTML="";
+    
     p.items.forEach(i=>{
         box.innerHTML += `
         <div class="mini-card">
@@ -288,7 +300,22 @@ function showOffers(k){
             </div>
         </div>`;
     });
-    document.getElementById("offersPanel").style.display="block";
+
+    let panel = document.getElementById("offersPanel");
+    panel.classList.remove("panel-hide");
+    panel.classList.add("panel-show");
+}
+
+function closeOffers(){
+    let panel = document.getElementById("offersPanel");
+    panel.classList.remove("panel-show");
+    panel.classList.add("panel-hide");
+    
+    // الانتظار حتى ينتهي الأنميشن ثم إخفاء العنصر
+    setTimeout(() => {
+        panel.style.display = "none";
+        panel.classList.remove("panel-hide");
+    }, 400); 
 }
 
 function orderWA(service){
@@ -298,12 +325,7 @@ function orderWA(service){
 function orderTG(service){
     window.open(`https://t.me/${TELEGRAM_USER}?text=${encodeURIComponent("أهلاً، أود طلب: " + service)}`);
 }
-
-function closeOffers(){
-    document.getElementById("offersPanel").style.display="none";
-}
 </script>
 
 </body>
 </html>
-rt
